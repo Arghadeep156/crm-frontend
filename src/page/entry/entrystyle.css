@@ -1,0 +1,16 @@
+.entry-page{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-box{
+    width: 100%;                /* Ensure the card takes full width */
+    max-width: 400px;           /* Max width for the card */
+    padding: 2rem;              /* Add some padding to the card */
+    border-radius: 8px;         /* Rounded corners for the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    background-color: #ffffff; /* White background for the card */
+    box-shadow: 0px 0px 15px -5px black;
+}
