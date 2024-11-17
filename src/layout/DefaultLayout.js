@@ -6,7 +6,7 @@ export default function DefaultLayout({ children }) {
   return (
     <div>
       <div className="default-layout">
-        <header className="header">
+        <header className="header mb-2">
           <HeaderComponent />
         </header>
         <main className="main">{children}</main>
