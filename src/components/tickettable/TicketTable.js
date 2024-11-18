@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from "react-bootstrap";
+import PropTypes from "prop-types";
 
 export default function TicketTable({ tickets }) {
   return (
@@ -19,7 +20,7 @@ export default function TicketTable({ tickets }) {
               return (
                 <tr>
                   <td>{ele.id}</td>
-                  <td>Pta nahi</td>
+                  <td>{ele.subject}</td>
                   <td>{ele.status}</td>
                   <td>{ele.addedAt}</td>
                 </tr>
@@ -37,3 +38,6 @@ export default function TicketTable({ tickets }) {
     </div>
   );
 }
+TicketTable.prototypes = {
+  tickets: PropTypes.array.isRequired,
+};
