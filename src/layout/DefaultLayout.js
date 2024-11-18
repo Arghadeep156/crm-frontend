@@ -10,7 +10,7 @@ export default function DefaultLayout({ children }) {
           <HeaderComponent />
         </header>
         <main className="main">{children}</main>
-        <footer classname="footer">
+        <footer className="footer">
           <FooterComponent />
         </footer>
       </div>
