@@ -57,6 +57,31 @@
     "id": 10,
     "subject": "data Displayed Wrong",
     "status": "Client reponse pending",
-    "addedAt": "2024-09-23"
+    "addedAt": "2024-09-23",
+    "history": [
+      {
+        "date": "2024-01-01",
+        "message": "wkjhfdskjhkjhfsjhcakjhkjdckjsd",
+        "messageBy": "client"
+      },
+
+      {
+        "date": "2024-01-01",
+        "message": "wkjhfdskjhkjhfskvsjlfkvnsflk",
+        "messageBy": "operator"
+      },
+
+      {
+        "date": "2024-01-01",
+        "message": "jhdfjsdjfhsdjfhsdkjfhskdjfhks",
+        "messageBy": "client"
+      },
+
+      {
+        "date": "2024-01-01",
+        "message": "wkjhfdskjhkjhfskjshkshdfkjhjfh",
+        "messageBy": "client"
+      }
+    ]
   }
 ]

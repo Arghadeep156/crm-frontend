@@ -38,6 +38,6 @@ export default function TicketTable({ tickets }) {
     </div>
   );
 }
-TicketTable.prototypes = {
+TicketTable.propTypes = {
   tickets: PropTypes.array.isRequired,
 };
