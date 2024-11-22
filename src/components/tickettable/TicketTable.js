@@ -1,8 +1,16 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export default function TicketTable({ tickets }) {
+  const navigate = useNavigate();
+
+  const getTicket = (id) => {
+    console.log("Function Reached");
+    navigate(`/ticket/${id}`);
+  };
+
   return (
     <div>
       <Table striped bordered hover>
@@ -18,7 +26,7 @@ export default function TicketTable({ tickets }) {
           {tickets.length ? (
             tickets.map((ele) => {
               return (
-                <tr>
+                <tr key={ele.id} onClick={() => getTicket(ele.id)}>
                   <td>{ele.id}</td>
                   <td>{ele.subject}</td>
                   <td>{ele.status}</td>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Card, Badge, Button, Form } from "react-bootstrap";
+//import { Row, Col, Card, Badge, Button, Form } from "react-bootstrap";
 import "./MessageHistoryStyle.css";
 
 export default function MessageHistory({ msg }) {
