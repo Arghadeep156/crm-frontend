@@ -3,26 +3,18 @@ import { Container, Col, Row, Button } from "react-bootstrap";
 import PageBreadCrumb from "../../components/breadcrumb/BreadCrumb";
 import SearchForm from "../../components/search-form/SearchForm";
 import TicketTable from "../../components/tickettable/TicketTable";
-import Tickets from "../../assets/dummy-tickets.json";
+//import Tickets from "../../assets/dummy-tickets.json";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { fetchAllTicket } from "./ticketActions";
 
 export default function TicketListing() {
-  const [str, setStr] = useState("");
-  const [displayTicket, setDisplayTicket] = useState(Tickets);
+  const dispatch = useDispatch();
+  // const [str, setStr] = useState("");
 
-  const handleOnChange = (e) => {
-    setStr(e.target.value);
-    searchTicket(e.target.value);
-  };
-
-  const searchTicket = (sttr) => {
-    const displayList = Tickets.filter((row) =>
-      row.subject.toLowerCase().includes(sttr.toLowerCase())
-    );
-    setDisplayTicket(displayList);
-  };
-
-  useEffect(() => {}, [str, displayTicket]);
+  useEffect(() => {
+    dispatch(fetchAllTicket());
+  }, [dispatch]);
 
   return (
     <Container>
@@ -38,13 +30,13 @@ export default function TicketListing() {
           </Link>
         </Col>
         <Col className="text-right">
-          <SearchForm handleOnChange={handleOnChange} str={str} />
+          <SearchForm />
         </Col>
       </Row>
       <hr />
       <Row>
         <Col>
-          <TicketTable tickets={displayTicket} />
+          <TicketTable />
         </Col>
       </Row>
     </Container>

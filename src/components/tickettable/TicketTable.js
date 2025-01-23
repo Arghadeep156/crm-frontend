@@ -1,9 +1,13 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-export default function TicketTable({ tickets }) {
+export default function TicketTable() {
+  const { isLoading, error, searchTicketList } = useSelector(
+    (state) => state.tickets
+  );
+
   const navigate = useNavigate();
 
   const getTicket = (id) => {
@@ -11,6 +15,8 @@ export default function TicketTable({ tickets }) {
     navigate(`/ticket/${id}`);
   };
 
+  if (isLoading) return <h3>Loading...</h3>;
+  if (error) return <h1>{error}</h1>;
   return (
     <div>
       <Table striped bordered hover>
@@ -23,14 +29,14 @@ export default function TicketTable({ tickets }) {
           </tr>
         </thead>
         <tbody>
-          {tickets.length ? (
-            tickets.map((ele) => {
+          {searchTicketList.length ? (
+            searchTicketList.map((ele) => {
               return (
-                <tr key={ele.id} onClick={() => getTicket(ele.id)}>
-                  <td>{ele.id}</td>
+                <tr key={ele._id} onClick={() => getTicket(ele._id)}>
+                  <td>{ele._id}</td>
                   <td>{ele.subject}</td>
                   <td>{ele.status}</td>
-                  <td>{ele.addedAt}</td>
+                  <td>{ele.openAt}</td>
                 </tr>
               );
             })
@@ -46,6 +52,3 @@ export default function TicketTable({ tickets }) {
     </div>
   );
 }
-TicketTable.propTypes = {
-  tickets: PropTypes.array.isRequired,
-};

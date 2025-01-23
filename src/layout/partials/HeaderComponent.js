@@ -1,10 +1,18 @@
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import logo from "../../assets/image/Gemini_Generated_Image_4e0egf4e0egf4e0e-removebg-preview.png";
+import { useNavigate } from "react-router-dom";
+import { userLogout } from "../../api/userApi";
 
 export default function HeaderComponent() {
+  const navigate = useNavigate();
+  const logoutUser = async () => {
+    await userLogout();
+    sessionStorage.removeItem("accessJWT");
+    navigate("/");
+  };
   return (
     <Navbar collapseOnSelect bg="info" variant="dark" expand="md">
       <Navbar.Brand>
@@ -19,9 +27,9 @@ export default function HeaderComponent() {
           <LinkContainer to="/tickets">
             <Nav.Link>Tickets</Nav.Link>
           </LinkContainer>
-          {/* <LinkContainer>
-            <Nav.Link>Logout</Nav.Link>
-          </LinkContainer> */}
+          <LinkContainer to="">
+            <Nav.Link onClick={logoutUser}>Logout</Nav.Link>
+          </LinkContainer>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
