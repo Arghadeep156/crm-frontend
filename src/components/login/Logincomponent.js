@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserProfile } from "../../page/entry/dashboard/userAction";
 
 export default function Logincomponent({ setFormPage }) {
-  const { isLoading, error } = useSelector((state) => state.login);
+  const { isLoading, isAuth, error } = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -26,7 +26,7 @@ export default function Logincomponent({ setFormPage }) {
     if (sessionStorage.getItem("accessJWT")) {
       navigate("/dashboard");
     }
-  }, [navigate]);
+  }, [navigate, isAuth]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;

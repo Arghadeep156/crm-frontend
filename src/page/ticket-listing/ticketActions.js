@@ -10,8 +10,7 @@ export const fetchAllTicket = () => async (dispatch) => {
   dispatch(fetchTicketLoading());
   try {
     const result = await getAllTickets();
-    console.log(result);
-    dispatch(fetchTicketSuccess(result.data.message));
+    result && dispatch(fetchTicketSuccess(result.message));
   } catch (error) {
     dispatch(fetchTicketFail(error.message));
   }

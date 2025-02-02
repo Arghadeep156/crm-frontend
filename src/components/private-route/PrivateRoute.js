@@ -16,12 +16,15 @@ export default function PrivateRoute({ children, ...rest }) {
       const result = await fetchNewAccessJWTFromRefreshJWT();
       result && dispatch(loginSuccess());
     };
-    updateAccessJWT();
 
-    if (sessionStorage.getItem("accessJWT")) {
+    !sessionStorage.getItem("accessjwt") &&
+      localStorage.getItem("crmSite") &&
+      updateAccessJWT();
+
+    if (!isAuth && sessionStorage.getItem("accessJWT")) {
       dispatch(loginSuccess());
     }
-  }, [dispatch]);
+  }, [dispatch, isAuth]);
 
   if (!isAuth) {
     return <Navigate to="/" />; // Redirect to home if not authenticated

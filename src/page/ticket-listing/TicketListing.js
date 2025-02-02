@@ -10,7 +10,6 @@ import { fetchAllTicket } from "./ticketActions";
 
 export default function TicketListing() {
   const dispatch = useDispatch();
-  // const [str, setStr] = useState("");
 
   useEffect(() => {
     dispatch(fetchAllTicket());

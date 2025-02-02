@@ -4,7 +4,7 @@ export const getAllTickets = async () => {
   try {
     const result = await axios.get("http://localhost:3001/v1/ticket", {
       headers: {
-        Authorization: `Bearer ${process.env.AUTH_TOKEN}`, // Retrieve from env or secure storage
+        authorization: sessionStorage.getItem("accessJWT"), // Retrieve from env or secure storage
       },
     });
 
