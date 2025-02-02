@@ -52,8 +52,34 @@ export const userLogout = async () => {
         },
       }
     );
-    console.log(response.data);
+    return response;
   } catch (error) {
     console.log("User logout errored - ", error.message);
+  }
+};
+
+export const fetchNewAccessJWTFromRefreshJWT = async () => {
+  try {
+    const crmSite = JSON.parse(localStorage.getItem("crmSite")); //he reason we parse the value from localStorage is that localStorage only stores data as strings.
+    const refreshJwt = crmSite ? crmSite.refreshJwt : null;
+    const response = await axios.get(
+      " http://localhost:3001/v1/tokens/fresh-access-jwt",
+      {
+        headers: {
+          authorization: refreshJwt,
+        },
+      }
+    );
+
+    if (response.data.status === "success") {
+      sessionStorage.setItem("accessJWT", response.data.accessJWT);
+    }
+    return true;
+  } catch (error) {
+    if (error.message === "Request failed with status code 403") {
+      //The refreshJWT is expired
+      localStorage.removeItem("crmSite");
+    }
+    return false;
   }
 };

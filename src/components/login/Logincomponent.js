@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Row,
@@ -16,11 +16,17 @@ import { useNavigate } from "react-router-dom";
 import { getUserProfile } from "../../page/entry/dashboard/userAction";
 
 export default function Logincomponent({ setFormPage }) {
-  const { isLoading, isAuth, error } = useSelector((state) => state.login);
+  const { isLoading, error } = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (sessionStorage.getItem("accessJWT")) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +46,8 @@ export default function Logincomponent({ setFormPage }) {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-      alert("Email and Password required.");
+      alert("Email and password are required."); // Show an alert if fields are missing
+      return; // Stop execution if validation fails
     }
     dispatch(loginPending());
     try {
@@ -53,13 +60,6 @@ export default function Logincomponent({ setFormPage }) {
       dispatch(getUserProfile());
     } catch (error) {
       dispatch(loginFail(error.message));
-    }
-  };
-
-  const handleOnResetSubmit = (e) => {
-    e.preventDefault();
-    if (!email) {
-      alert("Email is required.");
     }
   };
 

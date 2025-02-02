@@ -9,9 +9,13 @@ import { userLogout } from "../../api/userApi";
 export default function HeaderComponent() {
   const navigate = useNavigate();
   const logoutUser = async () => {
-    await userLogout();
+    const response = await userLogout();
+    console.log(response);
     sessionStorage.removeItem("accessJWT");
-    navigate("/");
+    localStorage.removeItem("crmSite");
+    if (response.data.status === "success") {
+      navigate("/");
+    }
   };
   return (
     <Navbar collapseOnSelect bg="info" variant="dark" expand="md">
