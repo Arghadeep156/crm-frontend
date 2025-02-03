@@ -18,3 +18,19 @@ export const getAllTickets = async () => {
     throw new Error("Failed to fetch tickets"); // Propagate the error
   }
 };
+
+export const getTicketUsingId = async (ticketId) => {
+  try {
+    const result = await axios.get(
+      `http://localhost:3001/v1/ticket/${ticketId}`,
+      {
+        headers: {
+          authorization: sessionStorage.getItem("accessJWT"),
+        },
+      }
+    );
+    return result.data.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};

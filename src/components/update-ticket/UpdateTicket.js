@@ -10,7 +10,6 @@ export default function UpdateTicket({
   return (
     <Form onSubmit={handleOnSubmit}>
       <Form.Label>Reply</Form.Label>
-      <Form.Text>Please reply here</Form.Text>
       <Form.Control
         as="textarea"
         row="5"

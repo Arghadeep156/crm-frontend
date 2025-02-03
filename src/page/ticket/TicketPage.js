@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import PageBreadCrumb from "../../components/breadcrumb/BreadCrumb";
-import Tickets from "../../assets/dummy-tickets.json";
+import tickets from "../../assets/dummy-tickets.json";
 import MessageHistory from "../../components/message-history/MessageHistory";
 import UpdateTicket from "../../components/update-ticket/UpdateTicket";
 import { useParams } from "react-router-dom";
+import { viewTicket } from "../ticket-listing/ticketActions";
+import { useSelector } from "react-redux";
 
 export default function TicketPage() {
+  const { chosenTicket } = useSelector((state) => state.tickets);
   const { tId } = useParams();
   const [message, setMessage] = useState("");
   const [ticket, setTicket] = useState({});
 
   useEffect(() => {
-    for (let i = 0; i < Tickets.length; i++) {
-      if (Tickets[i].id == tId) {
-        setTicket(Tickets[i]);
-        continue;
-      }
-    }
+    dispatchEvent(viewTicket(tId));
+    setTicket(chosenTicket);
   }, [message, tId]);
 
   const handleOnChange = (e) => {
@@ -38,7 +37,7 @@ export default function TicketPage() {
       <Row>
         <Col className="text-weight-bolder text-secondary">
           <div className="subject">Subject : {ticket.subject}</div>
-          <div className="date">Ticket Open : {ticket.addedAt}</div>
+          <div className="date">Ticket Open : {ticket.openAt}</div>
           <div className="status">Current Status : {ticket.status}</div>
         </Col>
         <Col className="d-flex justify-content-end">
@@ -46,7 +45,9 @@ export default function TicketPage() {
         </Col>
       </Row>
       <Row className="mt-4">
-        <Col>{ticket.history && <MessageHistory msg={ticket.history} />}</Col>
+        <Col>
+          {ticket.conversation && <MessageHistory msg={ticket.conversation} />}
+        </Col>
       </Row>
       <hr />
       <Row className="mt-4">

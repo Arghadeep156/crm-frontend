@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Container, Col, Row, Button } from "react-bootstrap";
 import PageBreadCrumb from "../../components/breadcrumb/BreadCrumb";
 import SearchForm from "../../components/search-form/SearchForm";
