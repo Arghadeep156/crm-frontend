@@ -1,30 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Spinner, Alert } from "react-bootstrap";
 import PageBreadCrumb from "../../components/breadcrumb/BreadCrumb";
-import tickets from "../../assets/dummy-tickets.json";
+//import tickets from "../../assets/dummy-tickets.json";
 import MessageHistory from "../../components/message-history/MessageHistory";
 import UpdateTicket from "../../components/update-ticket/UpdateTicket";
 import { useParams } from "react-router-dom";
-import { viewTicket } from "../ticket-listing/ticketActions";
+import { fetchSingleTicket } from "../ticket-listing/ticketActions";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addConversation } from "../../api/ticketapi";
 
 export default function TicketPage() {
-  const { chosenTicket } = useSelector((state) => state.tickets);
+  const { isLoading, error, singleTicket } = useSelector(
+    (state) => state.tickets
+  );
+  const { user } = useSelector((state) => state.user);
   const { tId } = useParams();
   const [message, setMessage] = useState("");
   const [ticket, setTicket] = useState({});
+  const dispatch = useDispatch();
 
+  // Fetch ticket data when `tId` changes
   useEffect(() => {
-    dispatchEvent(viewTicket(tId));
-    setTicket(chosenTicket);
-  }, [message, tId]);
+    dispatch(fetchSingleTicket(tId));
+  }, [tId, dispatch]); // Only depend on `tId`
+
+  // Update `ticket` state when `singleTicket` changes
+  useEffect(() => {
+    if (singleTicket && singleTicket._id === tId) {
+      setTicket(singleTicket);
+    }
+  }, [singleTicket, tId]); // Only depend on `singleTicket` and `tId`
 
   const handleOnChange = (e) => {
     setMessage(e.target.value);
   };
 
-  const handleOnSubmit = () => {
-    alert("Message Recieved");
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    const apiObject = { sender: user.name, message: message };
+    await addConversation(tId, apiObject);
+    dispatch(fetchSingleTicket(tId));
+    setMessage("");
+    console.log("Hellow user");
   };
 
   return (
@@ -32,6 +50,12 @@ export default function TicketPage() {
       <Row>
         <Col>
           <PageBreadCrumb page="Ticket" />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {isLoading && <Spinner variant="primary" animation="border" />}
+          {error && <Alert variant="danger">{error}</Alert>}
         </Col>
       </Row>
       <Row>

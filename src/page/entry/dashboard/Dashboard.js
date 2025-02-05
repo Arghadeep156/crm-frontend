@@ -1,11 +1,19 @@
 import React from "react";
+import { useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import TicketTable from "../../../components/tickettable/TicketTable";
-import tickets from "../../../assets/dummy-tickets.json";
 import BreadCrumb from "../../../components/breadcrumb/BreadCrumb";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { fetchAllTicket } from "../../ticket-listing/ticketActions";
 
 export default function Dashboard() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAllTicket());
+  }, [dispatch]);
+
   return (
     <Container>
       <Row>
@@ -37,7 +45,7 @@ export default function Dashboard() {
       <hr />
       <Row>
         <Col className="recent-ticket">
-          <TicketTable tickets={tickets} />
+          <TicketTable />
         </Col>
       </Row>
     </Container>

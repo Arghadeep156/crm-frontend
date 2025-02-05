@@ -11,7 +11,6 @@ export default function TicketTable() {
   const navigate = useNavigate();
 
   const getTicket = (id) => {
-    console.log("Function Reached");
     navigate(`/ticket/${id}`);
   };
 

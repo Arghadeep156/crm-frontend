@@ -3,7 +3,9 @@ import {
   fetchTicketLoading,
   fetchTicketSuccess,
   searchTicket,
-  fetchParticularTicket,
+  fetchingSingleTicketLoading,
+  fetchSingleTicketSuccess,
+  fetchSingleTicketFail,
 } from "./ticketsSlice";
 import { getAllTickets, getTicketUsingId } from "../../api/ticketapi";
 
@@ -17,12 +19,13 @@ export const fetchAllTicket = () => async (dispatch) => {
   }
 };
 
-export const viewTicket = (tid) => async (dispatch) => {
+export const fetchSingleTicket = (tid) => async (dispatch) => {
+  dispatch(fetchingSingleTicketLoading());
   try {
     const response = await getTicketUsingId(tid);
-    response && dispatch(fetchParticularTicket(response));
+    response && dispatch(fetchSingleTicketSuccess(response));
   } catch (error) {
-    console.log("viewTicket errored out", error.message);
+    dispatch(fetchSingleTicketFail(error.message));
   }
 };
 

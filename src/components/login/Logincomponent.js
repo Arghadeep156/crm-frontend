@@ -40,7 +40,6 @@ export default function Logincomponent({ setFormPage }) {
       default:
         break;
     }
-    console.log(name, value);
   };
 
   const handleOnSubmit = async (e) => {

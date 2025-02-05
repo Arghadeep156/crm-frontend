@@ -5,7 +5,7 @@ const initialState = {
   isLoading: false,
   error: "",
   searchTicketList: [],
-  chosenTicket: {},
+  singleTicket: {},
   // replyTicketError: "",
   // replyMsg: "",
 };
@@ -34,8 +34,16 @@ const ticketListSlice = createSlice({
         return ticketObj.subject.toLowerCase().includes(payload.toLowerCase());
       });
     },
-    fetchParticularTicket: (state, action) => {
-      state.chosenTicket = action.payload;
+    fetchingSingleTicketLoading: (state) => {
+      state.isLoading = true;
+    },
+    fetchSingleTicketSuccess: (state, { payload }) => {
+      state.singleTicket = payload;
+      state.isLoading = false;
+    },
+    fetchSingleTicketFail: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });
@@ -45,6 +53,8 @@ export const {
   fetchTicketSuccess,
   fetchTicketFail,
   searchTicket,
-  fetchParticularTicket,
+  fetchingSingleTicketLoading,
+  fetchSingleTicketSuccess,
+  fetchSingleTicketFail,
 } = ticketListSlice.actions;
 export default ticketListSlice.reducer;

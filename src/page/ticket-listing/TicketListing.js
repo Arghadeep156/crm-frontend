@@ -3,18 +3,11 @@ import { Container, Col, Row, Button } from "react-bootstrap";
 import PageBreadCrumb from "../../components/breadcrumb/BreadCrumb";
 import SearchForm from "../../components/search-form/SearchForm";
 import TicketTable from "../../components/tickettable/TicketTable";
-//import Tickets from "../../assets/dummy-tickets.json";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { fetchAllTicket } from "./ticketActions";
+// import { useDispatch } from "react-redux";
+// import { fetchAllTicket } from "./ticketActions";
 
 export default function TicketListing() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchAllTicket());
-  }, [dispatch]);
-
   return (
     <Container>
       <Row>

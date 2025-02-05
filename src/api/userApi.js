@@ -27,7 +27,6 @@ export const userLogin = async (formData) => {
 export const fetchUserDetails = async () => {
   try {
     const accessJWT = sessionStorage.getItem("accessJWT");
-    console.log(accessJWT);
     if (!accessJWT) {
       throw new Error("Token not found!");
     }

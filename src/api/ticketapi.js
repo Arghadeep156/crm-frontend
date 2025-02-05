@@ -34,3 +34,20 @@ export const getTicketUsingId = async (ticketId) => {
     console.log(error.message);
   }
 };
+
+export const addConversation = async (ticketId, data) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:3001/v1/ticket/${ticketId}`,
+      data,
+      {
+        headers: {
+          authorization: sessionStorage.getItem("accessJWT"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
