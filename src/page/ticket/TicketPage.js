@@ -8,15 +8,12 @@ import { useParams } from "react-router-dom";
 import { fetchSingleTicket } from "../ticket-listing/ticketActions";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addConversation } from "../../api/ticketapi";
 
 export default function TicketPage() {
   const { isLoading, error, singleTicket } = useSelector(
     (state) => state.tickets
   );
-  const { user } = useSelector((state) => state.user);
   const { tId } = useParams();
-  const [message, setMessage] = useState("");
   const [ticket, setTicket] = useState({});
   const dispatch = useDispatch();
 
@@ -31,19 +28,6 @@ export default function TicketPage() {
       setTicket(singleTicket);
     }
   }, [singleTicket, tId]); // Only depend on `singleTicket` and `tId`
-
-  const handleOnChange = (e) => {
-    setMessage(e.target.value);
-  };
-
-  const handleOnSubmit = async (e) => {
-    e.preventDefault();
-    const apiObject = { sender: user.name, message: message };
-    await addConversation(tId, apiObject);
-    dispatch(fetchSingleTicket(tId));
-    setMessage("");
-    console.log("Hellow user");
-  };
 
   return (
     <Container>
@@ -76,11 +60,7 @@ export default function TicketPage() {
       <hr />
       <Row className="mt-4">
         <Col>
-          <UpdateTicket
-            handleOnChange={handleOnChange}
-            message={message}
-            handleOnSubmit={handleOnSubmit}
-          />
+          <UpdateTicket tId={tId} />
         </Col>
       </Row>
     </Container>

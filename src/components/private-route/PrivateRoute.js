@@ -4,11 +4,12 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import { useSelector, useDispatch } from "react-redux";
 import { loginSuccess } from "../login/LoginSlice";
 import { fetchNewAccessJWTFromRefreshJWT } from "../../api/userApi";
-
+import { getUserProfile } from "../../page/entry/dashboard/userAction";
 //const isAuth = true;
 
 export default function PrivateRoute({ children, ...rest }) {
   const { isAuth } = useSelector((state) => state.login);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,6 +18,8 @@ export default function PrivateRoute({ children, ...rest }) {
       result && dispatch(loginSuccess());
     };
 
+    !user._id && dispatch(getUserProfile());
+
     !sessionStorage.getItem("accessjwt") &&
       localStorage.getItem("crmSite") &&
       updateAccessJWT();
@@ -24,7 +27,7 @@ export default function PrivateRoute({ children, ...rest }) {
     if (!isAuth && sessionStorage.getItem("accessJWT")) {
       dispatch(loginSuccess());
     }
-  }, [dispatch, isAuth]);
+  }, [dispatch, isAuth, user._id]);
 
   if (!isAuth) {
     return <Navigate to="/" />; // Redirect to home if not authenticated

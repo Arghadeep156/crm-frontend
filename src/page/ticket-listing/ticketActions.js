@@ -6,8 +6,15 @@ import {
   fetchingSingleTicketLoading,
   fetchSingleTicketSuccess,
   fetchSingleTicketFail,
+  replyTicketLoading,
+  replyTicketSuccess,
+  replyTicketFail,
 } from "./ticketsSlice";
-import { getAllTickets, getTicketUsingId } from "../../api/ticketapi";
+import {
+  getAllTickets,
+  getTicketUsingId,
+  addConversation,
+} from "../../api/ticketapi";
 
 export const fetchAllTicket = () => async (dispatch) => {
   dispatch(fetchTicketLoading());
@@ -26,6 +33,16 @@ export const fetchSingleTicket = (tid) => async (dispatch) => {
     response && dispatch(fetchSingleTicketSuccess(response));
   } catch (error) {
     dispatch(fetchSingleTicketFail(error.message));
+  }
+};
+
+export const updateTicketConversation = (tid, data) => async (dispatch) => {
+  dispatch(replyTicketLoading());
+  try {
+    const response = await addConversation(tid, data);
+    response && dispatch(replyTicketSuccess(response));
+  } catch (error) {
+    replyTicketFail(error.message);
   }
 };
 
