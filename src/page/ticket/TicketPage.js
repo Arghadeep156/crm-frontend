@@ -5,7 +5,10 @@ import PageBreadCrumb from "../../components/breadcrumb/BreadCrumb";
 import MessageHistory from "../../components/message-history/MessageHistory";
 import UpdateTicket from "../../components/update-ticket/UpdateTicket";
 import { useParams } from "react-router-dom";
-import { fetchSingleTicket } from "../ticket-listing/ticketActions";
+import {
+  fetchSingleTicket,
+  updateTicketStatusClosed,
+} from "../ticket-listing/ticketActions";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
@@ -45,11 +48,20 @@ export default function TicketPage() {
       <Row>
         <Col className="text-weight-bolder text-secondary">
           <div className="subject">Subject : {ticket.subject}</div>
-          <div className="date">Ticket Open : {ticket.openAt}</div>
+          <div className="date">
+            Ticket Open :{" "}
+            {ticket.openAt && new Date(ticket.openAt).toLocaleDateString()}
+          </div>
           <div className="status">Current Status : {ticket.status}</div>
         </Col>
         <Col className="d-flex justify-content-end">
-          <Button variant="outline-info">Close Ticket</Button>
+          <Button
+            variant="outline-info"
+            onClick={() => dispatch(updateTicketStatusClosed(ticket._id))}
+            disabled={ticket.status === "Closed"}
+          >
+            Close Ticket
+          </Button>
         </Col>
       </Row>
       <Row className="mt-4">

@@ -35,7 +35,7 @@ export default function TicketTable() {
                   <td>{ele._id}</td>
                   <td>{ele.subject}</td>
                   <td>{ele.status}</td>
-                  <td>{ele.openAt}</td>
+                  <td>{ele.openAt && new Date(ele.openAt).toLocaleString()}</td>
                 </tr>
               );
             })

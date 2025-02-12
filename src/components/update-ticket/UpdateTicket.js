@@ -15,12 +15,16 @@ export default function UpdateTicket({ tId }) {
   const [showAlert, setShowAlert] = useState(true);
 
   useEffect(() => {
+    if (replyMsg) {
+      setShowAlert(true); // Show alert when replyMsg is available
+    }
+
     const timer = setTimeout(() => {
       setShowAlert(false); // Hide the alert after 3 seconds
     }, 3000);
 
     return () => clearTimeout(timer); // Clean up the timer on unmount
-  }, []);
+  }, [replyMsg]);
 
   const handleOnChange = (e) => {
     setMessage(e.target.value);
@@ -39,7 +43,7 @@ export default function UpdateTicket({ tId }) {
 
   return (
     <div>
-      {replyMsg && (
+      {replyMsg && showAlert && (
         <Alert
           variant="success"
           onClose={() => setShowAlert(false)}

@@ -35,6 +35,7 @@ export const fetchUserDetails = async () => {
         authorization: accessJWT,
       },
     });
+    console.log(response);
     return response.data.message.result;
   } catch (error) {
     console.log(error.message);

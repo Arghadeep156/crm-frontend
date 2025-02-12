@@ -9,11 +9,15 @@ import {
   replyTicketLoading,
   replyTicketSuccess,
   replyTicketFail,
+  closeTicketLoading,
+  closeTicketSuccess,
+  closeTicketFail,
 } from "./ticketsSlice";
 import {
   getAllTickets,
   getTicketUsingId,
   addConversation,
+  closeTicket,
 } from "../../api/ticketapi";
 
 export const fetchAllTicket = () => async (dispatch) => {
@@ -43,6 +47,18 @@ export const updateTicketConversation = (tid, data) => async (dispatch) => {
     response && dispatch(replyTicketSuccess(response));
   } catch (error) {
     replyTicketFail(error.message);
+  }
+};
+
+export const updateTicketStatusClosed = (tid) => async (dispatch) => {
+  dispatch(closeTicketLoading());
+  try {
+    const response = await closeTicket(tid);
+    console.log(response);
+    response && dispatch(closeTicketSuccess(response));
+    dispatch(fetchSingleTicket(tid));
+  } catch (error) {
+    dispatch(closeTicketFail(error.message));
   }
 };
 

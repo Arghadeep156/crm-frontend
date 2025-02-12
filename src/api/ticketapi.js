@@ -51,3 +51,20 @@ export const addConversation = async (ticketId, data) => {
     console.log(error.message);
   }
 };
+
+export const closeTicket = async (ticketId) => {
+  try {
+    const response = await axios.patch(
+      `http://localhost:3001/v1/ticket/close-ticket/${ticketId}`,
+      {},
+      {
+        headers: {
+          authorization: sessionStorage.getItem("accessJWT"),
+        },
+      }
+    );
+    console.log(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
