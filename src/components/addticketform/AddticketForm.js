@@ -1,24 +1,71 @@
-import React from "react";
-import { Form, Card, Button, Row, Col } from "react-bootstrap";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
+import { Form, Button, Row, Col, Spinner, Alert, Card } from "react-bootstrap";
 import "./AddticketForm.css";
+import { shortText } from "../../utils/validate";
+import { useSelector, useDispatch } from "react-redux";
+import { createNewTicket } from "./AddTicketAction";
+import { restSuccessMSg } from "./AddTicketSlice";
 
-export default function AddTicketForm({
-  handleOnChange,
-  formData,
-  handleOnSubmit,
-  formDataError,
-}) {
-  const formatDate = (date) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().split("T")[0];
+const initialFrmDt = {
+  subject: "",
+  issueDate: "",
+  message: "",
+};
+
+const initialFrmError = {
+  subject: false,
+  issueDate: false,
+  message: false,
+};
+export default function AddTicketForm() {
+  const dispatch = useDispatch();
+
+  const {
+    user: { name },
+  } = useSelector((state) => state.user);
+
+  const { isLoading, error, successMsg } = useSelector(
+    (state) => state.openTicket
+  );
+
+  const [frmData, setFrmData] = useState(initialFrmDt);
+  const [frmDataError, setFrmDataError] = useState(initialFrmError);
+
+  useEffect(() => {
+    return () => {
+      successMsg && dispatch(restSuccessMSg());
+    };
+  }, [dispatch, frmData, frmDataError]);
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setFrmData({
+      ...frmData,
+      [name]: value,
+    });
+  };
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+
+    setFrmDataError(initialFrmError);
+
+    const isSubjectValid = await shortText(frmData.subject);
+
+    setFrmDataError({
+      ...initialFrmError,
+      subject: !isSubjectValid,
+    });
+    dispatch(createNewTicket({ ...frmData, sender: name }));
   };
 
   return (
     <Card className="p-4 mt-3 add-new-ticket">
       <h1 className="text-info text-center">Add New Ticket</h1>
       <hr />
+      {error && <Alert variant="danger">{error}</Alert>}
+      {successMsg && <Alert variant="primary">{successMsg}</Alert>}
+      {isLoading && <Spinner variant="primary" animation="border" />}
       <Form autoComplete="off" onSubmit={handleOnSubmit}>
         {/* Subject Field */}
         <Form.Group as={Row} className="mb-3">
@@ -27,17 +74,15 @@ export default function AddTicketForm({
           </Form.Label>
           <Col sm={9}>
             <Form.Control
-              type="text"
               name="subject"
-              value={formData.subject}
-              //   minLength="3"
-              //   maxLnegth="100"
+              value={frmData.subject}
+              maxLength="100"
               onChange={handleOnChange}
-              placeholder="Enter Subject"
+              placeholder="Subject"
               required
             />
             <Form.Text className="text-danger">
-              {formDataError.subject && "Subject length should be atleast 3!"}
+              {frmDataError.subject && "Subject length should be atleast 3!"}
             </Form.Text>
           </Col>
         </Form.Group>
@@ -51,7 +96,7 @@ export default function AddTicketForm({
             <Form.Control
               type="date"
               name="issueDate"
-              value={formatDate(formData.issueDate)}
+              value={frmData.issueDate}
               onChange={handleOnChange}
               required
             />
@@ -66,9 +111,9 @@ export default function AddTicketForm({
           <Col sm={9}>
             <Form.Control
               as="textarea"
-              name="details"
-              rows="12"
-              value={formData.details}
+              name="message"
+              rows="5"
+              value={frmData.message}
               onChange={handleOnChange}
               required
             />
@@ -83,9 +128,3 @@ export default function AddTicketForm({
     </Card>
   );
 }
-AddTicketForm.propTypes = {
-  handleOnChange: PropTypes.func.isRequired,
-  formData: PropTypes.object.isRequired,
-  handleOnSubmit: PropTypes.func.isRequired,
-  formDataError: PropTypes.object.isRequired,
-};

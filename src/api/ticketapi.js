@@ -68,3 +68,16 @@ export const closeTicket = async (ticketId) => {
     console.log(error.message);
   }
 };
+
+export const newTicket = async (data) => {
+  try {
+    const response = await axios.post("http://localhost:3001/v1/ticket", data, {
+      headers: {
+        authorization: sessionStorage.getItem("accessJWT"),
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};

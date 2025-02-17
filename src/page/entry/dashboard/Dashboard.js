@@ -4,15 +4,29 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import TicketTable from "../../../components/tickettable/TicketTable";
 import BreadCrumb from "../../../components/breadcrumb/BreadCrumb";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { fetchAllTicket } from "../../ticket-listing/ticketActions";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
+  const { tickets } = useSelector((state) => state.tickets);
 
   useEffect(() => {
-    dispatch(fetchAllTicket());
-  }, [dispatch]);
+    if (!tickets.length) {
+      dispatch(fetchAllTicket());
+    }
+  }, [dispatch, tickets]);
+
+  const noOfTicket = tickets.length;
+  const noOfPendingTickets = () => {
+    let value = 0;
+    for (let i = 0; i < tickets.length; i++) {
+      if (tickets[i].status === "Pending client reponse") {
+        value += 1;
+      }
+    }
+    return value;
+  };
 
   return (
     <Container>
@@ -35,8 +49,8 @@ export default function Dashboard() {
       </Row>
       <Row>
         <Col className="text-center mt-5 mb-2">
-          <div>Total ticket : 50</div>
-          <div>Pending ticket : 5</div>
+          <div>Total ticket : {noOfTicket}</div>
+          <div>Pending ticket : {noOfPendingTickets()}</div>
         </Col>
       </Row>
       <Row>
